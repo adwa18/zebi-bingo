@@ -1542,7 +1542,7 @@ async function loadFriends() {
     const stats=await api('GET','/api/referral-stats');
     document.getElementById('friends-count').textContent=stats.referral_count||0;
     document.getElementById('friends-next').textContent=stats.next_bonus_at||10;
-    const botName='ZebiBingoBot';
+    const botName='Zebi_Bingo_Bot';
     const link=`https://t.me/${botName}?start=${S.tgUser?.id||''}`;
     const le=document.getElementById('friends-link'); if(le)le.textContent=link;
     const listEl=document.getElementById('friends-list');
