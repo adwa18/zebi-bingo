@@ -65,7 +65,7 @@ logging.basicConfig(
     format='%(asctime)s | %(levelname)-8s | %(name)s | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
 )
-logger = logging.getLogger('zebi_bingo')
+logger = logging.getLogger('Zebi_bingo')
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 app = Flask(__name__, static_folder='static')
@@ -95,8 +95,8 @@ MIN_DEPOSIT      = 50
 MAX_DEPOSIT      = 5_000
 MIN_WITHDRAW     = 100
 PAYMENT_ACCOUNTS = (
-    "🏦 <b>CBE:</b>     <code>1000340957688</code>  (ናትናኤል ዳንኤል)\n"
-    "📱 <b>Telebirr:</b> <code>0944156222</code>  (ናትናኤል ዳንኤል)"
+    "🏦 <b>CBE:</b>     <code>1000532982565</code>  (ናትናኤል ዳንኤል)\n"
+    "📱 <b>Telebirr:</b> <code>0913252238</code>  (ናትናኤል ዳንኤል)"
 )
 
 # Owner = first admin (or set OWNER_TG_ID env var separately)
@@ -1401,7 +1401,7 @@ def webapp_deposit_request():
     fresh = query_db('SELECT * FROM users WHERE id=?', (user['id'],), one=True)
     admin_txt = (
         f"📥 <b>Deposit Request (WebApp)</b>\n\n"
-        f"ZB Username: <b>{fresh['username']}</b>\n"
+        f"BB Username: <b>{fresh['username']}</b>\n"
         f"TG ID: <code>{user['tg_id']}</code>\n"
         f"Sender Name: {sender_name}\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\nReference: <code>{ref}</code>\n"
@@ -1438,7 +1438,7 @@ def webapp_withdraw_request():
         return jsonify({'error': 'Insufficient balance'}), 400
     admin_txt = (
         f"💸 <b>Withdrawal Request (WebApp)</b>\n\n"
-        f"ZB Username: <b>{fresh['username']}</b>\n"
+        f"BB Username: <b>{fresh['username']}</b>\n"
         f"TG ID: <code>{user['tg_id']}</code>\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\n"
         f"Method: <b>{bank}</b>\n"
@@ -1600,7 +1600,7 @@ def kb_bets(balance: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 # ── Router ────────────────────────────────────────────────────────────────────
-bot_router = Router(name='zebi_bingo')
+bot_router = Router(name='Zebi_bingo')
 
 def admin_guard(handler):
     async def _w(message: Message, *a, **kw):
@@ -1910,7 +1910,7 @@ async def deposit_amount(message: Message, state: FSMContext):
     await message.answer(
         f"✅ Amount: <b>{amt:,.0f} ETB</b>\n\n"
         f"📤 <b>Send payment to:</b>\n{PAYMENT_ACCOUNTS}\n\n"
-        f"📌 <b>Reference:</b> <code>ZB-{message.from_user.id}</code>\n"
+        f"📌 <b>Reference:</b> <code>BB-{message.from_user.id}</code>\n"
         "<i>Include this reference when sending!</i>\n\n"
         "Reply with your <b>transaction reference / SMS code</b>:",
         reply_markup=kb_cancel(),
@@ -1928,7 +1928,7 @@ async def deposit_ref(message: Message, state: FSMContext):
     await state.clear()
     admin_txt = (
         f"📥 <b>Deposit Request</b>\n\n"
-        f"ZB Username: <b>{bb_username}</b>\n"
+        f"BB Username: <b>{bb_username}</b>\n"
         f"TG: <code>{message.from_user.id}</code> (@{message.from_user.username or '—'})\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\nReference: <code>{ref}</code>\n"
         f"Time: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC\n\n"
@@ -2034,7 +2034,7 @@ async def withdraw_account_name(message: Message, state: FSMContext):
     await state.clear()
     admin_txt = (
         f"💸 <b>Withdrawal Request</b>\n\n"
-        f"ZB Username: <b>{bb_username}</b>\n"
+        f"BB Username: <b>{bb_username}</b>\n"
         f"TG: <code>{message.from_user.id}</code> (@{message.from_user.username or '—'})\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\n"
         f"Method: <b>{bank}</b>\n"
