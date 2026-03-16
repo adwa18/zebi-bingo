@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
-<title>Benz Bingo</title>
+<title>Zebi Bingo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -1056,7 +1056,7 @@ body::before {
 
   <!-- ── HEADER ── -->
   <div id="header">
-    <div class="hdr-logo">BENZ<span>BINGO</span></div>
+    <div class="hdr-logo">ZEBI<span>BINGO</span></div>
     <div class="hdr-right">
       <div class="hdr-balance mono" id="hdr-balance">0 ETB</div>
       <div class="hdr-user" id="hdr-user"></div>
@@ -1069,7 +1069,7 @@ body::before {
     <!-- WELCOME -->
     <div class="screen active" id="screen-welcome">
       <div class="welcome-inner fade-in">
-        <div class="welcome-logo">BENZ<span>BINGO</span></div>
+        <div class="welcome-logo">ZEBI<span>BINGO</span></div>
         <div class="welcome-tagline">Real Money · Real Time · Real Fun</div>
         <div class="welcome-greeting">Hello, <strong id="welcome-greeting">Player</strong></div>
         <div class="welcome-dots">
@@ -2481,7 +2481,7 @@ async function loadProfile() {
     document.getElementById('ref-next-at').textContent = next + ' more';
   } catch (_) {}
   // Build referral link
-  const botName = window._botUsername || 'BenzBingoBot';
+  const botName = window._botUsername || 'Zebi_Bingo_Bot';
   const refLink = `https://t.me/${botName}?start=${S.tgUser?.id||''}`;
   const linkEl = document.getElementById('referral-link-box');
   if (linkEl) linkEl.textContent = refLink;
@@ -2504,7 +2504,7 @@ async function loadFriends() {
         </div>`).join('');
     }
   } catch (_) {}
-  const botName = window._botUsername || 'BenzBingoBot';
+  const botName = window._botUsername || 'Zebi_Bingo_Bot';
   const refLink = `https://t.me/${botName}?start=${S.tgUser?.id||''}`;
   const linkEl = document.getElementById('referral-link-box');
   if (linkEl) linkEl.textContent = refLink;
@@ -2516,7 +2516,7 @@ function copyReferralLink() {
 }
 function shareReferralTelegram() {
   const link = document.getElementById('referral-link-box').textContent;
-  const txt = encodeURIComponent(`🎱 Play Benz Bingo and win real ETB!\n🎁 Get a welcome bonus + 10% on first deposit!\n${link}`);
+  const txt = encodeURIComponent(`🎱 Play Zebi Bingo and win real ETB!\n🎁 Get a welcome bonus + 10% on first deposit!\n${link}`);
   window.open(`https://t.me/share/url?url=${encodeURIComponent(link)}&text=${txt}`,'_blank');
 }
 
