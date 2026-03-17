@@ -95,8 +95,8 @@ MIN_DEPOSIT      = 50
 MAX_DEPOSIT      = 5_000
 MIN_WITHDRAW     = 100
 PAYMENT_ACCOUNTS = (
-    "🏦 <b>CBE:</b>     <code>1000532982565</code>  (ናትናኤል ዳንኤል)\n"
-    "📱 <b>Telebirr:</b> <code>0913252238</code>  (ናትናኤል ዳንኤል)"
+    "🏦 <b>CBE:</b>     <code>1000340957688</code>  (ናትናኤል ዳንኤል)\n"
+    "📱 <b>Telebirr:</b> <code>0944156222</code>  (ናትናኤል ዳንኤል)"
 )
 
 # Owner = first admin (or set OWNER_TG_ID env var separately)
@@ -1734,13 +1734,13 @@ async def cmd_help(message: Message, state: FSMContext):
         '2. Open the game and pick your lucky number\n'
         '3. Optionally choose a 2nd card (double bet, double chance!)\n'
         '4. 2+ players join → 30-second countdown → GO!\n'
-        '5. Numbers called every 2 seconds (e.g. B-7, O-65)\n'
+        '5. Numbers called every 3 seconds (e.g. B-7, O-65)\n'
         '6. Mark numbers on your card in the correct column (B I N G O)\n'
-        '7. Complete row / column / diagonal → tap 🎉 BINGO!\n'
-        '8. Wrong BINGO claim = removed from game!\n'
+        '7. Complete row / column / diagonal / corner → tap 🎉 BINGO!\n'
+        '8. Wrong BINGO claim = you lose the bet & removed from game!\n'
         '9. Winner takes <b>90% of the pot</b>\n\n'
         '<b>Commands:</b> /start /balance /stats /history /referral /cancel /help\n'
-        '<b>Support:</b> @Tewodros1888',
+        '<b>Support:</b> @Natidani1',
     )
 
 # /balance ────────────────────────────────────────────────────────────────────
@@ -1910,7 +1910,7 @@ async def deposit_amount(message: Message, state: FSMContext):
     await message.answer(
         f"✅ Amount: <b>{amt:,.0f} ETB</b>\n\n"
         f"📤 <b>Send payment to:</b>\n{PAYMENT_ACCOUNTS}\n\n"
-        f"📌 <b>Reference:</b> <code>BB-{message.from_user.id}</code>\n"
+        f"📌 <b>Reference:</b> <code>ZB-{message.from_user.id}</code>\n"
         "<i>Include this reference when sending!</i>\n\n"
         "Reply with your <b>transaction reference / SMS code</b>:",
         reply_markup=kb_cancel(),
@@ -1938,7 +1938,7 @@ async def deposit_ref(message: Message, state: FSMContext):
         _notify_queue.put({'tg_id': aid, 'event': 'custom', 'data': {'message': admin_txt}})
     await message.answer(
         f"✅ <b>Deposit request submitted!</b>\n\nAmount: <b>{amt:,.0f} ETB</b>\n"
-        "Our team will credit your wallet within <b>~1 hour</b>. 🔔",
+        "Our team will credit your wallet within <b>~30 minutes</b>. 🔔",
         reply_markup=kb_main(),
     )
 
@@ -2078,8 +2078,8 @@ async def cmd_support(message: Message):
     await message.answer(
         '🆘 <b>Contact Support</b>\n\n'
         'For help with deposits, withdrawals, or any issue:\n\n'
-        '👉 @Tewodros1888\n\n'
-        'We typically respond within 1–2 hours.',
+        '👉 @Natidani1\n\n'
+        'We typically respond right away.',
         reply_markup=kb_main(),
     )
 
