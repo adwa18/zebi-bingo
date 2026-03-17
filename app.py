@@ -2101,7 +2101,7 @@ async def cmd_invite(message: Message, session: aiohttp.ClientSession):
         f'👥 Friends joined: <b>{rc}</b>\n'
         f'🎁 Next bonus at: <b>{nxt} referrals</b> (+{REFERRAL_BONUS} ETB)\n\n'
         f'<b>Recent friends:</b>\n{recent}\n\n'
-        f'Share your link → friends register → you earn <b>{REFERRAL_BONUS} ETB</b> every {REFERRALS_PER_BONUS} signups!\n\n'        '🎁 <b>New players get 10% bonus on first deposit!</b>\n\n'        '🇪🇹 <i>በ 10 ብር ቦነስ ጀምሩ! 1ኛ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!</i>',
+        f'Share your link → friends register → you earn <b>{REFERRAL_BONUS} ETB</b> every {REFERRALS_PER_BONUS} signups!\n\n'        '🎁 <b>Register Now & get 10 Birr! 10% bonus on first deposit! 💰 Invite Friends & Earn Money!</b>\n\n'        '🇪🇹 <i>🎁 በ 10 ብር ቦነስ አሁን ጀምሩ! ለመጀመሪያ ዲፖዚት 10% ቦነስ! 💰 ጓደኛ ሲጋብዙ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!</i>',
         reply_markup=kb_main(),
     )
 
