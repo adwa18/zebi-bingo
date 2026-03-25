@@ -1,5 +1,5 @@
 """
-Benz Bingo — Flask Backend  +  Telegram Bot (merged, single process)
+Zebi Bingo — Flask Backend  +  Telegram Bot (merged, single process)
 ======================================================================
 Running both Flask and the aiogram bot in one process means you only
 need ONE free Render Web Service — no Background Worker required.
@@ -65,7 +65,7 @@ logging.basicConfig(
     format='%(asctime)s | %(levelname)-8s | %(name)s | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
 )
-logger = logging.getLogger('benz_bingo')
+logger = logging.getLogger('zebi_bingo')
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 app = Flask(__name__, static_folder='static')
@@ -95,8 +95,8 @@ MIN_DEPOSIT      = 50
 MAX_DEPOSIT      = 5_000
 MIN_WITHDRAW     = 100
 PAYMENT_ACCOUNTS = (
-    "🏦 <b>CBE:</b>     <code>1000532982565</code>  (Tewodros Ephrem)\n"
-    "📱 <b>Telebirr:</b> <code>0913252238</code>  (Tewodros Ephrem)"
+    "🏦 <b>CBE:</b>     <code>1000340957688</code>  (ናትናኤል ዳንኤል)\n"
+    "📱 <b>Telebirr:</b> <code>0944156222</code>  (ናትናኤል ዳንኤል)"
 )
 
 # Owner = first admin (or set OWNER_TG_ID env var separately)
@@ -1672,7 +1672,7 @@ def kb_phone() -> ReplyKeyboardMarkup:
         resize_keyboard=True, one_time_keyboard=True,
     )
 
-def kb_webapp(label: str = '🎱 Open Benz Bingo', bet: int | None = None) -> InlineKeyboardMarkup:
+def kb_webapp(label: str = '🎱 Open Zebi Bingo', bet: int | None = None) -> InlineKeyboardMarkup:
     port = int(os.environ.get('PORT', 5000))
     base = os.environ.get('WEBAPP_URL', f'http://localhost:{port}').rstrip('/')
     url  = f'{base}/?bet={bet}' if bet else f'{base}/'
@@ -1694,7 +1694,7 @@ def kb_bets(balance: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 # ── Router ────────────────────────────────────────────────────────────────────
-bot_router = Router(name='benz_bingo')
+bot_router = Router(name='zebi_bingo')
 
 def admin_guard(handler):
     import inspect as _inspect
@@ -1746,7 +1746,7 @@ async def cmd_start(message: Message, state: FSMContext, session: aiohttp.Client
         await state.set_state(Registration.waiting_for_username)
         await state.update_data(tg_id=str(tg.id))
         new_text = (
-            '🎱 <b>Welcome to Benz Bingo!</b>\n\n'
+            '🎱 <b>Welcome to Zebi Bingo!</b>\n\n'
             'Pick numbers · Mark your card · Shout <b>BINGO!</b>\n'
             'Win up to <b>90% of the pot</b> every round 💰\n\n'
             f'Choose a username (2–20 chars, no spaces):\n'
@@ -1826,7 +1826,7 @@ async def cmd_cancel(message: Message, state: FSMContext):
 async def cmd_help(message: Message, state: FSMContext):
     await state.clear()
     await message.answer(
-        '🎱 <b>Benz Bingo — How to Play</b>\n\n'
+        '🎱 <b>Zebi Bingo — How to Play</b>\n\n'
         '1. Tap 🎮 Play Bingo → choose bet (10/20/50/100 ETB)\n'
         '2. Open the game and pick your lucky number\n'
         '3. Optionally choose a 2nd card (double bet, double chance!)\n'
@@ -1837,7 +1837,7 @@ async def cmd_help(message: Message, state: FSMContext):
         '8. Wrong BINGO claim = removed from game!\n'
         '9. Winner takes <b>90% of the pot</b>\n\n'
         '<b>Commands:</b> /start /balance /stats /history /referral /cancel /help\n'
-        '<b>Support:</b> @Tewodros1888',
+        '<b>Support:</b> @Natidani1',
     )
 
 # /balance ────────────────────────────────────────────────────────────────────
@@ -2175,8 +2175,8 @@ async def cmd_support(message: Message):
     await message.answer(
         '🆘 <b>Contact Support</b>\n\n'
         'For help with deposits, withdrawals, or any issue:\n\n'
-        '👉 @Tewodros1888\n\n'
-        'We typically respond within 1–2 hours.',
+        '👉 @Natidani1\n\n'
+        'We typically respond right away.',
         reply_markup=kb_main(),
     )
 
@@ -2532,5 +2532,5 @@ threading.Thread(target=_deferred_startup, daemon=True, name='Startup').start()
 # ══════════════════════════════════════════════════════════════════════════════
 if __name__ == '__main__':
     port = int(os.environ.get('PORT', 5000))
-    print(f'[Benz Bingo] http://0.0.0.0:{port}  DB={DB_TYPE}')
+    print(f'[Zebi Bingo] http://0.0.0.0:{port}  DB={DB_TYPE}')
     app.run(host='0.0.0.0', port=port, debug=False, use_reloader=False)
