@@ -1699,9 +1699,20 @@ bot_router = Router(name='zebi_bingo')
 def admin_guard(handler):
     import inspect as _inspect
     async def _w(message: Message, *a, **kw):
-        if message.from_user.id not in ADMIN_TG_IDS_INT:
+        tg_id = message.from_user.id
+        is_admin = tg_id in ADMIN_TG_IDS_INT
+        if not is_admin:
+            try:
+                row = query_db('SELECT is_admin, is_owner FROM users WHERE tg_id=?',
+                               (str(tg_id),), one=True)
+
+                is_admin = bool(row and (row.get('is_admin') or row.get('is_owner')))
+            except Exception:
+                pass
+        if not is_admin:
             await message.answer('⛔ Admin access required.')
             return
+        
         sig      = _inspect.signature(handler)
         accepted = {k: v for k, v in kw.items() if k in sig.parameters}
         return await handler(message, *a, **accepted)
