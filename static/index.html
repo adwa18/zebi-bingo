@@ -2345,7 +2345,7 @@ async function loadAdmin() {
   loadAdminStats(); loadAdminGames(); loadAdminUsers();
   // Show owner-only section
   const adminCard = document.getElementById('admin-manage-admins-card');
-  if (adminCard) adminCard.style.display = S.user?.is_owner ? 'block' : 'none';
+  if (adminCard) adminCard.style.display = (S.user?.is_owner || S.user?.is_admin) ? 'block' : 'none';
 }
 
 async function loadAdminStats() {
