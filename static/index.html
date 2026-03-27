@@ -2404,7 +2404,7 @@ async function adminSetAdmin(makeAdmin) {
   const username = (document.getElementById('admin-promote-uname')?.value || '').trim();
   if (!username) { toast('Enter a username', 'error'); return; }
   try {
-    const res = await api('GET', '/api/admin/users');
+    const res = await api('GET', '/api/admin/users?q=' + encodeURIComponent(username));
     const users = res.users || (Array.isArray(res) ? res : []);
     const target = users.find(u => u.username === username);
     if (!target) { toast('User not found', 'error'); return; }
