@@ -803,7 +803,7 @@ body::before {
         <div class="welcome-logo-wrap fade-in">
           <div class="logo-orb">
             <div>
-              <div class="logo-text">BB</div>
+              <div class="logo-text">ZB</div>
             </div>
           </div>
           <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:26px;color:var(--gold);letter-spacing:6px;margin-bottom:2px">ZEBI BINGO</div>
@@ -1038,12 +1038,12 @@ body::before {
           📱 <b>Send payment to:</b><br>
           CBE: <span id="dep-cbe" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('1000340957688','CBE number')">1000340957688</span> (ናትናኤል ዳንኤል) <span style="font-size:10px;color:var(--text3)" onclick="copyText('1000340957688','CBE number')">📋</span><br>
           Telebirr: <span id="dep-tel" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('0944156222','Telebirr number')">0944156222</span> (ናትናኤል ዳንኤል) <span style="font-size:10px;color:var(--text3)" onclick="copyText('0944156222','Telebirr number')">📋</span><br>
-          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">BB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
+          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">ZB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
         </div>
         <label class="label">Your Name (as sent on payment) <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-sender-name" type="text" placeholder="e.g. Abebe Kebede" required>
         <label class="label" style="margin-top:8px">Amount (ETB) <span style="color:var(--red)">*</span></label>
-        <input class="input" id="dep-amount" type="number" min="10" max="5000" placeholder="Min 10 ETB" required>
+        <input class="input" id="dep-amount" type="number" min="10" max="5000" placeholder="Min 50 ETB" required>
         <label class="label" style="margin-top:8px">Transaction Reference / SMS Code <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-ref" type="text" placeholder="e.g. TXN123456" required>
         <button class="btn btn-gold" style="margin-top:14px" onclick="submitDeposit()">SUBMIT DEPOSIT REQUEST</button>
@@ -1131,7 +1131,7 @@ body::before {
         <div class="card-title" style="color:var(--gold)">👑 Manage Admins <span style="font-size:10px;color:var(--text3)">(Owner only)</span></div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Promoted admins can approve deposits/withdrawals but cannot promote others.</div>
         <label class="label">Username to Promote / Demote</label>
-        <input class="input" id="admin-promote-uname" placeholder="Enter BB username" list="admin-uname-list" autocomplete="off">
+        <input class="input" id="admin-promote-uname" placeholder="Enter ZB username" list="admin-uname-list" autocomplete="off">
         <div style="display:flex;gap:8px;margin-top:10px">
           <button class="btn btn-gold" style="flex:1" onclick="adminSetAdmin(true)">👑 Make Admin</button>
           <button class="btn btn-ghost" style="flex:1" onclick="adminSetAdmin(false)">🚫 Remove Admin</button>
@@ -1452,7 +1452,7 @@ function copyText(txt, label) {
 function loadDeposit() {
   const uid = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || S.tgUser?.id || 'YOUR_TG_ID';
   const rc = document.getElementById('dep-ref-code');
-  if (rc) rc.textContent = 'BB-' + uid;
+  if (rc) rc.textContent = 'ZB-' + uid;
 }
 function loadWithdraw() {}
 function selectWdBank(bank) {
