@@ -95,8 +95,8 @@ MIN_DEPOSIT      = 50
 MAX_DEPOSIT      = 5_000
 MIN_WITHDRAW     = 100
 PAYMENT_ACCOUNTS = (
-    "🏦 <b>CBE:</b>     <code>1000321953757</code>  (ፍጹም ጥላሁን)\n"
-    "📱 <b>Telebirr:</b> <code>0912803696</code>  (ፍጹም ጥላሁን)"
+    "🏦 <b>CBE:</b>     <code>1000321953757</code>  (ቴዎድሮስ ኤፍሬም)\n"
+    "📱 <b>Telebirr:</b> <code>0913252238</code>  (ቴዎድሮስ ኤፍሬም)"
 )
 
 # Owner = first admin (or set OWNER_TG_ID env var separately)
