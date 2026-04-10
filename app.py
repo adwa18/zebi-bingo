@@ -65,7 +65,7 @@ logging.basicConfig(
     format='%(asctime)s | %(levelname)-8s | %(name)s | %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S',
 )
-logger = logging.getLogger('zebi_bingo')
+logger = logging.getLogger('joker_bingo')
 
 # ─── CONFIG ───────────────────────────────────────────────────────────────────
 app = Flask(__name__, static_folder='static')
@@ -93,10 +93,10 @@ REFERRAL_BONUS      = 20         # ETB per batch
 REFERRALS_PER_BONUS = 10         # new users per batch
 MIN_DEPOSIT      = 50
 MAX_DEPOSIT      = 5_000
-MIN_WITHDRAW     = 100
+MIN_WITHDRAW     = 200
 PAYMENT_ACCOUNTS = (
-    "🏦 <b>CBE:</b>     <code>1000321953757</code>  (ቴዎድሮስ ኤፍሬም)\n"
-    "📱 <b>Telebirr:</b> <code>0913252238</code>  (ቴዎድሮስ ኤፍሬም)"
+    "🏦 <b>CBE:</b>     <code>1000532982565</code>  (Tewodros Ephrem)\n"
+    "📱 <b>Telebirr:</b> <code>0913252238</code>  (Tewodros Ephrem)"
 )
 
 # Owner = first admin (or set OWNER_TG_ID env var separately)
@@ -1219,7 +1219,10 @@ def claim_bingo(gid):
         else:
             card   = json.loads(prow['card'])
             marked = json.loads(prow['marked_cells'])
-        valid = check_bingo(card, marked, called_ints)
+        # Admins bypass BINGO validation (testing only — remove before production)
+        is_admin_player = bool(user.get('is_admin') or user.get('is_owner') or
+                               str(user.get('tg_id','')) in ADMIN_TG_IDS)
+        valid = True if is_admin_player else check_bingo(card, marked, called_ints)
         if not valid:
             # False claim → kick and forfeit their bet (already deducted at join)
             execute_db(
@@ -1505,6 +1508,68 @@ def webapp_deposit_request():
         f"Pending admin approval. You'll be notified once confirmed. ✅"}})
     return jsonify({'status': 'submitted'})
 
+def _check_withdrawal_eligibility(user):
+    """
+    Returns (ok:bool, error:str|None).
+    Rules:
+      B. Must have played 15+ games total (win/loss/forfeit — not 'left').
+      C. Max 1 withdrawal request per calendar day (UTC).
+         Must have played 5+ games today before requesting.
+    """
+    tg_id = str(user.get('tg_id', ''))
+    uid   = user['id']
+
+    # B: 15 total games played (result != 'left')
+    total_q = query_db(
+        "SELECT COUNT(*) AS c FROM game_history WHERE user_id=? AND result != 'left'",
+        (uid,), one=True
+    )
+    total_games = (total_q or {}).get('c', 0)
+    if total_games < 15:
+        remaining = 15 - total_games
+        return False, (f'⚠️ You need to play <b>{remaining} more game(s)</b> before withdrawing.\n'
+                       f'Total required: 15 · Played: {total_games}')
+
+    # C: daily game count (games today UTC, result != 'left')
+    if DB_TYPE == 'postgres':
+        today_q = query_db(
+            "SELECT COUNT(*) AS c FROM game_history WHERE user_id=? "
+            "AND result != 'left' AND played_at >= NOW() - INTERVAL '1 day' "
+            "AND DATE(played_at) = CURRENT_DATE",
+            (uid,), one=True
+        )
+    else:
+        today_q = query_db(
+            "SELECT COUNT(*) AS c FROM game_history WHERE user_id=? "
+            "AND result != 'left' AND DATE(played_at) = DATE('now')",
+            (uid,), one=True
+        )
+    today_games = (today_q or {}).get('c', 0)
+    if today_games < 5:
+        remaining_today = 5 - today_games
+        return False, (f'⚠️ You need to play <b>{remaining_today} more game(s) today</b> before withdrawing.\n'
+                       f'Required today: 5 · Played today: {today_games}')
+
+    # C: 1 withdrawal request per calendar day
+    if DB_TYPE == 'postgres':
+        wd_today = query_db(
+            "SELECT COUNT(*) AS c FROM transactions WHERE tg_id=? AND type='withdraw_request' "
+            "AND DATE(created_at) = CURRENT_DATE",
+            (tg_id,), one=True
+        )
+    else:
+        wd_today = query_db(
+            "SELECT COUNT(*) AS c FROM transactions WHERE tg_id=? AND type='withdraw_request' "
+            "AND DATE(created_at) = DATE('now')",
+            (tg_id,), one=True
+        )
+    if (wd_today or {}).get('c', 0) >= 1:
+        return False, ('⚠️ You have already submitted a withdrawal request today.\n'
+                       'Please wait for approval or try again tomorrow.')
+
+    return True, None
+
+
 @app.route('/api/withdraw-request', methods=['POST'])
 def webapp_withdraw_request():
     user, tg_user, err = require_auth()
@@ -1515,7 +1580,7 @@ def webapp_withdraw_request():
     bank         = str(body.get('bank', '')).strip()         # 'CBE' or 'Telebirr'
     account_name = str(body.get('account_name', '')).strip()
     if amt < MIN_WITHDRAW:
-        return jsonify({'error': f'Min withdrawal {MIN_WITHDRAW} ETB'}), 400
+        return jsonify({'error': f'Minimum withdrawal is {MIN_WITHDRAW} ETB'}), 400
     if not phone:
         return jsonify({'error': 'Phone/account number required'}), 400
     if not bank:
@@ -1525,6 +1590,16 @@ def webapp_withdraw_request():
     fresh = query_db('SELECT * FROM users WHERE id=?', (user['id'],), one=True)
     if fresh['balance'] < amt:
         return jsonify({'error': 'Insufficient balance'}), 400
+    ok_wd, err_wd = _check_withdrawal_eligibility(fresh)
+    if not ok_wd:
+        return jsonify({'error': err_wd}), 400
+    # Record the withdrawal request in transactions for daily limit tracking
+    import hashlib as _hwd
+    wd_req_ref = _hwd.md5(f"wdreq:{fresh['tg_id']}:{int(amt)}:{int(time.time())//86400}".encode()).hexdigest()[:16]
+    try:
+        execute_db('INSERT INTO transactions (tg_id,type,amount,ref,note) VALUES (?,?,?,?,?)',
+                   (fresh['tg_id'], 'withdraw_request', int(amt), wd_req_ref, 'webapp'))
+    except Exception: pass  # duplicate ref in same day — blocked above anyway
     admin_txt = (
         f"💸 <b>Withdrawal Request (WebApp)</b>\n\n"
         f"BB Username: <b>{fresh['username']}</b>\n"
@@ -1672,7 +1747,7 @@ def kb_phone() -> ReplyKeyboardMarkup:
         resize_keyboard=True, one_time_keyboard=True,
     )
 
-def kb_webapp(label: str = '🎱 Open Joker Bingo', bet: int | None = None) -> InlineKeyboardMarkup:
+def kb_webapp(label: str = '🎱 Open  Bingo', bet: int | None = None) -> InlineKeyboardMarkup:
     port = int(os.environ.get('PORT', 5000))
     base = os.environ.get('WEBAPP_URL', f'http://localhost:{port}').rstrip('/')
     url  = f'{base}/?bet={bet}' if bet else f'{base}/'
@@ -1694,25 +1769,14 @@ def kb_bets(balance: int) -> InlineKeyboardMarkup:
     return InlineKeyboardMarkup(inline_keyboard=rows)
 
 # ── Router ────────────────────────────────────────────────────────────────────
-bot_router = Router(name='zebi_bingo')
+bot_router = Router(name='benz_bingo')
 
 def admin_guard(handler):
     import inspect as _inspect
     async def _w(message: Message, *a, **kw):
-        tg_id = message.from_user.id
-        is_admin = tg_id in ADMIN_TG_IDS_INT
-        if not is_admin:
-            try:
-                row = query_db('SELECT is_admin, is_owner FROM users WHERE tg_id=?',
-                               (str(tg_id),), one=True)
-
-                is_admin = bool(row and (row.get('is_admin') or row.get('is_owner')))
-            except Exception:
-                pass
-        if not is_admin:
+        if message.from_user.id not in ADMIN_TG_IDS_INT:
             await message.answer('⛔ Admin access required.')
             return
-        
         sig      = _inspect.signature(handler)
         accepted = {k: v for k, v in kw.items() if k in sig.parameters}
         return await handler(message, *a, **accepted)
@@ -1840,15 +1904,15 @@ async def cmd_help(message: Message, state: FSMContext):
         '🎱 <b>Joker Bingo — How to Play</b>\n\n'
         '1. Tap 🎮 Play Bingo → choose bet (10/20/50/100 ETB)\n'
         '2. Open the game and pick your lucky number\n'
-        '3. Review your card and proceed to game area\n'
+        '3. Optionally choose a 2nd card (double bet, double chance!)\n'
         '4. 2+ players join → 30-second countdown → GO!\n'
         '5. Numbers called every 2 seconds (e.g. B-7, O-65)\n'
         '6. Mark numbers on your card in the correct column (B I N G O)\n'
-        '7. Complete row / column / diagonal / corner → tap 🎉 BINGO!\n'
-        '8. Wrong BINGO claim = lose your bet and removed from game!\n'
+        '7. Complete row / column / diagonal → tap 🎉 BINGO!\n'
+        '8. Wrong BINGO claim = removed from game!\n'
         '9. Winner takes <b>90% of the pot</b>\n\n'
         '<b>Commands:</b> /start /balance /stats /history /referral /cancel /help\n'
-        '<b>Support:</b> @Natidani1',
+        '<b>Support:</b> @Tewodros1888',
     )
 
 # /balance ────────────────────────────────────────────────────────────────────
@@ -2060,8 +2124,9 @@ async def cmd_withdraw(message: Message, state: FSMContext, session: aiohttp.Cli
     if u['balance'] < MIN_WITHDRAW:
         await message.answer(f"⚠️ Min withdrawal: <b>{MIN_WITHDRAW} ETB</b>.\n"
                              f"Your balance: <b>{u['balance']:,} ETB</b>"); return
-    if u['games_played'] < 1:
-        await message.answer('⚠️ Play at least one game before withdrawing.'); return
+    ok_wd, err_wd = _check_withdrawal_eligibility(u)
+    if not ok_wd:
+        await message.answer(err_wd, reply_markup=kb_main()); return
     await state.update_data(bb_username=u.get('username', '—'))
     await state.set_state(Withdrawal.waiting_for_amount)
     await message.answer(
@@ -2084,9 +2149,9 @@ async def withdraw_amount(message: Message, state: FSMContext, session: aiohttp.
     except Exception as exc:
         await message.answer(f'⚠️ {exc}'); return
     if amt < MIN_WITHDRAW:
-        await message.answer(f'⚠️ Minimum: {MIN_WITHDRAW} ETB.'); return
+        await message.answer(f'⚠️ Minimum withdrawal is {MIN_WITHDRAW} ETB.'); return
     if amt > u['balance']:
-        await message.answer(f"⚠️ Insufficient. Available: {u['balance']:,} ETB."); return
+        await message.answer(f"⚠️ Insufficient balance. Available: {u['balance']:,} ETB."); return
     await state.update_data(withdraw_amount=amt)
     await state.set_state(Withdrawal.waiting_for_bank)
     await message.answer(
@@ -2150,14 +2215,22 @@ async def withdraw_account_name(message: Message, state: FSMContext):
         f"Time: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC\n\n"
         f"✅ Approve: <code>/adminwithdraw {message.from_user.id} {amt:.0f}</code>"
     )
+    # Record the request for daily limit tracking
+    import hashlib as _hbotwd
+    wd_ref = _hbotwd.md5(f"wdreq:{message.from_user.id}:{int(amt)}:{int(time.time())//86400}".encode()).hexdigest()[:16]
+    with StandaloneDB() as sdb:
+        try:
+            sdb.run('INSERT INTO transactions (tg_id,type,amount,ref,note) VALUES (?,?,?,?,?)',
+                    (str(message.from_user.id), 'withdraw_request', int(amt), wd_ref, 'bot'))
+        except Exception: pass
     for aid in ADMIN_TG_IDS_INT:
         sent = _tg_notify_direct(aid, admin_txt)
         if not sent:
             _notify_queue.put({'tg_id': aid, 'event': 'custom', 'data': {'message': admin_txt}})
     await message.answer(
-        f"✅ <b>Withdrawal request received!</b>\n\nAmount: <b>{amt:,.0f} ETB</b>\n"
+        f"⏳ <b>Withdrawal request received!</b>\n\nAmount: <b>{amt:,.0f} ETB</b>\n"
         f"Method: <b>{bank}</b> · {phone}\n"
-        "Processed within <b>~1 hour</b>. 🔔",
+        "You'll be notified once your request is approved. Please wait. 🔔",
         reply_markup=kb_main(),
     )
 
@@ -2186,8 +2259,8 @@ async def cmd_support(message: Message):
     await message.answer(
         '🆘 <b>Contact Support</b>\n\n'
         'For help with deposits, withdrawals, or any issue:\n\n'
-        '👉 @Natidani1\n\n'
-        'We typically respond right away.',
+        '👉 @Tewodros1888\n\n'
+        'We typically respond within 1–2 hours.',
         reply_markup=kb_main(),
     )
 
@@ -2209,7 +2282,7 @@ async def cmd_invite(message: Message, session: aiohttp.ClientSession):
         f'👥 Friends joined: <b>{rc}</b>\n'
         f'🎁 Next bonus at: <b>{nxt} referrals</b> (+{REFERRAL_BONUS} ETB)\n\n'
         f'<b>Recent friends:</b>\n{recent}\n\n'
-        f'Share your link → friends register → you earn <b>{REFERRAL_BONUS} ETB</b> every {REFERRALS_PER_BONUS} signups!\n\n'        '🎁 <b>New players get 10% bonus on first deposit!</b>\n\n'        '🇪🇹 <i>በ 10 ብር ቦነስ ጀምሩ! ለመጀመሪያ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! የጋበዙት ጓደኛ ዲፖዚት ሲያደርግ ለናንተ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!</i>',
+        f'Share your link → friends register → you earn <b>{REFERRAL_BONUS} ETB</b> every {REFERRALS_PER_BONUS} signups!\n\n'        '🎁 <b>New players get 10% bonus on first deposit!</b>\n\n'        '🇪🇹 <i>በ 10 ብር ቦነስ ጀምሩ! 1ኛ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!</i>',
         reply_markup=kb_main(),
     )
 
@@ -2259,9 +2332,7 @@ async def cmd_adep(message: Message, session: aiohttp.ClientSession):
                              'Tip: /admindeposit &lt;tg_id&gt; to look up username first'); return
     tid, amt = int(parts[1]), float(parts[2])
     try:
-        res_u  = await bot_api('GET', f'/api/admin/users?q={tid}', tg_id=message.from_user.id, session=session)
-        users  = res_u.get('users', res_u) if isinstance(res_u, dict) else res_u
-        target = next((u for u in users if u['tg_id'] == str(tid)), None)
+        target = query_db('SELECT * FROM users WHERE tg_id=?', (str(tid),), one=True)
         if not target: await message.answer('⚠️ User not found.'); return
         # Idempotency: build a ref from admin_tg + user_tg + amount + minute-bucket
         import hashlib as _hl
@@ -2310,9 +2381,7 @@ async def cmd_awdraw(message: Message, session: aiohttp.ClientSession):
                              'Tip: /adminwithdraw &lt;tg_id&gt; to look up username first'); return
     tid, amt = int(parts[1]), float(parts[2])
     try:
-        res_u  = await bot_api('GET', f'/api/admin/users?q={tid}', tg_id=message.from_user.id, session=session)
-        users  = res_u.get('users', res_u) if isinstance(res_u, dict) else res_u
-        target = next((u for u in users if u['tg_id'] == str(tid)), None)
+        target = query_db('SELECT * FROM users WHERE tg_id=?', (str(tid),), one=True)
         if not target: await message.answer('⚠️ User not found.'); return
         res = await bot_api('POST', '/api/admin/funds', tg_id=message.from_user.id,
                             body={'username': target['username'], 'amount': -int(amt)}, session=session)
@@ -2402,13 +2471,14 @@ async def cmd_abcast(message: Message, session: aiohttp.ClientSession):
     parts = message.text.split(maxsplit=1)
     if len(parts) < 2: await message.answer('Usage: /adminbroadcast &lt;text&gt;'); return
     try:
-        users = await bot_api('GET', '/api/admin/users', tg_id=message.from_user.id, session=session)
+        # Fetch ALL users for broadcast — bypass the 10-user limit
+        all_users = query_db('SELECT tg_id FROM users WHERE is_banned=0 ORDER BY id')
     except Exception as exc:
         await message.answer(f'⚠️ {exc}'); return
-    for u in users:
+    for u in all_users:
         _notify_queue.put({'tg_id': int(u['tg_id']), 'event': 'custom',
                            'data': {'message': f"📣 <b>Announcement</b>\n\n{parts[1]}"}})
-    await message.answer(f"📣 Broadcast queued for {len(users)} users.")
+    await message.answer(f"📣 Broadcast queued for {len(all_users)} users.")
 
 # ── Notification drain task ───────────────────────────────────────────────────
 async def _drain_notify_queue(bot: Bot):
