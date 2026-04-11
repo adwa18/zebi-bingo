@@ -803,7 +803,7 @@ body::before {
         <div class="welcome-logo-wrap fade-in">
           <div class="logo-orb">
             <div>
-              <div class="logo-text">JB</div>
+              <div class="logo-text">BB</div>
             </div>
           </div>
           <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:26px;color:var(--gold);letter-spacing:6px;margin-bottom:2px">JOKER BINGO</div>
@@ -820,7 +820,7 @@ body::before {
         <div class="card slide-up" style="animation-delay:.2s">
           <div style="text-align:center;margin-bottom:10px">
             <div id="welcome-greeting" style="font-size:17px;font-weight:700;color:var(--text)">Welcome to Joker Bingo!</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.7">Pick your numbers · Mark your card · Shout BINGO!<br>Bet 10–100 ETB and win big prizes every round.</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.7">Pick your numbers · Mark your card · Shout BINGO!<br>Bet 10–200 ETB and win big prizes every round.</div>
           </div>
           <div id="welcome-error" style="display:none;background:rgba(220,50,50,.15);border:1px solid rgba(220,50,50,.4);border-radius:8px;padding:10px 14px;font-size:12px;color:#ff6b6b;margin-bottom:10px;line-height:1.5;text-align:left"></div>
           <button class="btn btn-gold" id="btn-welcome" onclick="handleWelcomeClick()">START PLAYING →</button>
@@ -1036,14 +1036,14 @@ body::before {
         <!-- Payment info box -->
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:2">
           📱 <b>Send payment to:</b><br>
-          CBE: <span id="dep-cbe" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('1000321953757','CBE number')">1000321953757</span> (ቴዎድሮስ ኤፍሬም ) <span style="font-size:10px;color:var(--text3)" onclick="copyText('1000321953757','CBE number')">📋</span><br>
-          Telebirr: <span id="dep-tel" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('0912803696','Telebirr number')">0913252238</span> (ቴዎድሮስ ኤፍሬም) <span style="font-size:10px;color:var(--text3)" onclick="copyText('0912803696','Telebirr number')">📋</span><br>
-          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">JB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
+          CBE: <span id="dep-cbe" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('1000340957688','CBE number')">1000340957688</span> (ናትናኤል ዳንኤል) <span style="font-size:10px;color:var(--text3)" onclick="copyText('1000340957688','CBE number')">📋</span><br>
+          Telebirr: <span id="dep-tel" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('0944156222','Telebirr number')">0944156222</span> (ናትናኤል ዳንኤል) <span style="font-size:10px;color:var(--text3)" onclick="copyText('0944156222','Telebirr number')">📋</span><br>
+          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">BB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
         </div>
         <label class="label">Your Name (as sent on payment) <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-sender-name" type="text" placeholder="e.g. Abebe Kebede" required>
         <label class="label" style="margin-top:8px">Amount (ETB) <span style="color:var(--red)">*</span></label>
-        <input class="input" id="dep-amount" type="number" min="10" max="5000" placeholder="Min 50 ETB" required>
+        <input class="input" id="dep-amount" type="number" min="10" max="5000" placeholder="Min 10 ETB" required>
         <label class="label" style="margin-top:8px">Transaction Reference / SMS Code <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-ref" type="text" placeholder="e.g. TXN123456" required>
         <button class="btn btn-gold" style="margin-top:14px" onclick="submitDeposit()">SUBMIT DEPOSIT REQUEST</button>
@@ -1070,7 +1070,7 @@ body::before {
         <label class="label" style="margin-top:8px">Account Holder Name <span style="color:var(--red)">*</span></label>
         <input class="input" id="wd-account-name" type="text" placeholder="Full name on account">
         <label class="label" style="margin-top:8px">Amount (ETB) <span style="color:var(--red)">*</span></label>
-        <input class="input" id="wd-amount" type="number" min="100" placeholder="Min 100 ETB">
+        <input class="input" id="wd-amount" type="number" min="200" placeholder="Min 200 ETB">
         <button class="btn btn-gold" style="margin-top:14px" onclick="submitWithdraw()">SUBMIT WITHDRAWAL</button>
         <button class="btn btn-ghost" style="margin-top:6px" onclick="showScreen('screen-lobby')">← Back</button>
       </div>
@@ -1083,7 +1083,7 @@ body::before {
         <div class="card-title">📨 Invite Friends</div>
         <div style="background:var(--surface2);border-radius:10px;padding:14px;margin-bottom:14px;text-align:center">
           <div style="font-size:28px">🎁</div>
-          <div style="font-size:13px;font-weight:700;color:var(--text);margin:6px 0">Earn 20 ETB every 10 friends!</div>
+          <div style="font-size:13px;font-weight:700;color:var(--text);margin:6px 0">Earn 5 ETB every 10 friends!</div>
           <div style="font-size:11px;color:var(--text2)">Share your link → they register → you earn</div>
         </div>
         <div style="margin-bottom:14px">
@@ -1131,7 +1131,7 @@ body::before {
         <div class="card-title" style="color:var(--gold)">👑 Manage Admins <span style="font-size:10px;color:var(--text3)">(Owner only)</span></div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Promoted admins can approve deposits/withdrawals but cannot promote others.</div>
         <label class="label">Username to Promote / Demote</label>
-        <input class="input" id="admin-promote-uname" placeholder="Enter Admin username" list="admin-uname-list" autocomplete="off">
+        <input class="input" id="admin-promote-uname" placeholder="Enter BB username" list="admin-uname-list" autocomplete="off">
         <div style="display:flex;gap:8px;margin-top:10px">
           <button class="btn btn-gold" style="flex:1" onclick="adminSetAdmin(true)">👑 Make Admin</button>
           <button class="btn btn-ghost" style="flex:1" onclick="adminSetAdmin(false)">🚫 Remove Admin</button>
@@ -1150,7 +1150,7 @@ body::before {
   <!-- FOOTER -->
   <div id="footer" style="display:none">
     <div class="footer-left"></div>
-    <div class="footer-brand">Created by <a href="tel:0913252238" style="color:var(--gold);text-decoration:none;font-weight:700">Benzion Creatives</a> · <a href="https://t.me/BenZcreatives" style="color:var(--gold);text-decoration:none" target="_blank">@BenZcreatives</a></div>
+    <div class="footer-brand">Created by <a href="tel:0913252238" style="color:var(--gold);text-decoration:none;font-weight:700">Benzion Creatives</a> · <a href="https://t.me/Natidani1" style="color:var(--gold);text-decoration:none" target="_blank">@Natidani1</a></div>
     <div class="theme-toggle" id="theme-toggle" onclick="toggleTheme()"></div>
   </div>
 
@@ -1452,7 +1452,7 @@ function copyText(txt, label) {
 function loadDeposit() {
   const uid = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || S.tgUser?.id || 'YOUR_TG_ID';
   const rc = document.getElementById('dep-ref-code');
-  if (rc) rc.textContent = 'JB-' + uid;
+  if (rc) rc.textContent = 'BB-' + uid;
 }
 function loadWithdraw() {}
 function selectWdBank(bank) {
@@ -1524,7 +1524,7 @@ function copyReferralLink() {
 }
 function shareReferralTelegram() {
   const t=document.getElementById('friends-link')?.textContent||'';
-  const msg='Join Joker Bingo 🎱 and win ETB!\n🎁 Get 10% bonus on your first deposit!\n\nበ 10 ብር ቦነስ ጀምሩ! ለመጀመሪያ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! የጋበዙት ጓደኛ ዲፖዚት ሲያደርግ ለናንተ ቦነስ! ይጫወቱ! ያሸንፉ!';
+  const msg='Join Joker Bingo 🎱 and win ETB!\n🎁 Get 10% bonus on your first deposit!\n\nበ 10 ብር ቦነስ ጀምሩ! 1ኛ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!';
   const url=`https://t.me/share/url?url=${encodeURIComponent(t)}&text=${encodeURIComponent(msg)}`;
   if(window.Telegram?.WebApp?.openTelegramLink)window.Telegram.WebApp.openTelegramLink(url);
   else window.open(url,'_blank');
@@ -2345,7 +2345,7 @@ async function loadAdmin() {
   loadAdminStats(); loadAdminGames(); loadAdminUsers();
   // Show owner-only section
   const adminCard = document.getElementById('admin-manage-admins-card');
-  if (adminCard) adminCard.style.display = (S.user?.is_owner || S.user?.is_admin) ? 'block' : 'none';
+  if (adminCard) adminCard.style.display = S.user?.is_owner ? 'block' : 'none';
 }
 
 async function loadAdminStats() {
@@ -2404,7 +2404,7 @@ async function adminSetAdmin(makeAdmin) {
   const username = (document.getElementById('admin-promote-uname')?.value || '').trim();
   if (!username) { toast('Enter a username', 'error'); return; }
   try {
-    const res = await api('GET', '/api/admin/users?q=' + encodeURIComponent(username));
+    const res = await api('GET', '/api/admin/users');
     const users = res.users || (Array.isArray(res) ? res : []);
     const target = users.find(u => u.username === username);
     if (!target) { toast('User not found', 'error'); return; }
