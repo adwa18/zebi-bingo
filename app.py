@@ -1489,7 +1489,7 @@ def webapp_deposit_request():
     fresh = query_db('SELECT * FROM users WHERE id=?', (user['id'],), one=True)
     admin_txt = (
         f"📥 <b>Deposit Request (WebApp)</b>\n\n"
-        f"BB Username: <b>{fresh['username']}</b>\n"
+        f"JB Username: <b>{fresh['username']}</b>\n"
         f"TG ID: <code>{user['tg_id']}</code>\n"
         f"Sender Name: {sender_name}\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\nReference: <code>{ref}</code>\n"
@@ -1602,7 +1602,7 @@ def webapp_withdraw_request():
     except Exception: pass  # duplicate ref in same day — blocked above anyway
     admin_txt = (
         f"💸 <b>Withdrawal Request (WebApp)</b>\n\n"
-        f"BB Username: <b>{fresh['username']}</b>\n"
+        f"JB Username: <b>{fresh['username']}</b>\n"
         f"TG ID: <code>{user['tg_id']}</code>\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\n"
         f"Method: <b>{bank}</b>\n"
@@ -2053,7 +2053,7 @@ async def cmd_deposit(message: Message, state: FSMContext, session: aiohttp.Clie
         u = await bot_api('GET', '/api/user', tg_id=message.from_user.id, session=session)
     except Exception as exc:
         await message.answer(f'⚠️ {exc}'); return
-    await state.update_data(bb_username=u.get('username', '—'))
+    await state.update_data(jb_username=u.get('username', '—'))
     await state.set_state(Deposit.waiting_for_amount)
     first_dep = u.get('deposit_count', 0) == 0
     await message.answer(
@@ -2082,7 +2082,7 @@ async def deposit_amount(message: Message, state: FSMContext):
     await message.answer(
         f"✅ Amount: <b>{amt:,.0f} ETB</b>\n\n"
         f"📤 <b>Send payment to:</b>\n{PAYMENT_ACCOUNTS}\n\n"
-        f"📌 <b>Reference:</b> <code>BB-{message.from_user.id}</code>\n"
+        f"📌 <b>Reference:</b> <code>JB-{message.from_user.id}</code>\n"
         "<i>Include this reference when sending!</i>\n\n"
         "Reply with your <b>transaction reference / SMS code</b>:",
         reply_markup=kb_cancel(),
@@ -2095,12 +2095,12 @@ async def deposit_ref(message: Message, state: FSMContext):
         await message.answer('Deposit cancelled.', reply_markup=kb_main()); return
     data = await state.get_data()
     amt         = data['deposit_amount']
-    bb_username = data.get('bb_username', '—')
+    jb_username = data.get('jb_username', '—')
     ref  = message.text.strip()
     await state.clear()
     admin_txt = (
         f"📥 <b>Deposit Request</b>\n\n"
-        f"BB Username: <b>{bb_username}</b>\n"
+        f"JB Username: <b>{jb_username}</b>\n"
         f"TG: <code>{message.from_user.id}</code> (@{message.from_user.username or '—'})\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\nReference: <code>{ref}</code>\n"
         f"Time: {datetime.utcnow().strftime('%Y-%m-%d %H:%M')} UTC\n\n"
@@ -2127,7 +2127,7 @@ async def cmd_withdraw(message: Message, state: FSMContext, session: aiohttp.Cli
     ok_wd, err_wd = _check_withdrawal_eligibility(u)
     if not ok_wd:
         await message.answer(err_wd, reply_markup=kb_main()); return
-    await state.update_data(bb_username=u.get('username', '—'))
+    await state.update_data(jb_username=u.get('username', '—'))
     await state.set_state(Withdrawal.waiting_for_amount)
     await message.answer(
         f"💳 <b>Withdraw Funds</b>\n\nAvailable: <b>{u['balance']:,} ETB</b>\n"
@@ -2203,11 +2203,11 @@ async def withdraw_account_name(message: Message, state: FSMContext):
     bank    = data.get('withdraw_bank', '—')
     phone   = data.get('withdraw_phone', '—')
     aname   = message.text.strip()
-    bb_username = data.get('bb_username', '—')
+    jb_username = data.get('jb_username', '—')
     await state.clear()
     admin_txt = (
         f"💸 <b>Withdrawal Request</b>\n\n"
-        f"BB Username: <b>{bb_username}</b>\n"
+        f"JB Username: <b>{jb_username}</b>\n"
         f"TG: <code>{message.from_user.id}</code> (@{message.from_user.username or '—'})\n"
         f"Amount: <b>{amt:,.0f} ETB</b>\n"
         f"Method: <b>{bank}</b>\n"
