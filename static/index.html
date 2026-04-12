@@ -652,7 +652,7 @@ body::before {
 }
 
 /* ══════════════════════════════════════════════════════════
-   SCREEN 7 — RESULT
+   SCREEN 7 — RESULT (updated: same buttons for win/loss)
 ══════════════════════════════════════════════════════════ */
 .result-hero { text-align:center; padding:24px 0; }
 .result-icon  { font-size:64px; margin-bottom:12px; }
@@ -803,7 +803,7 @@ body::before {
         <div class="welcome-logo-wrap fade-in">
           <div class="logo-orb">
             <div>
-              <div class="logo-text">BB</div>
+              <div class="logo-text">JB</div>
             </div>
           </div>
           <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:26px;color:var(--gold);letter-spacing:6px;margin-bottom:2px">JOKER BINGO</div>
@@ -820,7 +820,7 @@ body::before {
         <div class="card slide-up" style="animation-delay:.2s">
           <div style="text-align:center;margin-bottom:10px">
             <div id="welcome-greeting" style="font-size:17px;font-weight:700;color:var(--text)">Welcome to Joker Bingo!</div>
-            <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.7">Pick your numbers · Mark your card · Shout BINGO!<br>Bet 10–200 ETB and win big prizes every round.</div>
+            <div style="font-size:12px;color:var(--text2);margin-top:4px;line-height:1.7">Pick your numbers · Mark your card · Shout BINGO!<br>Bet 10–100 ETB and win big prizes every round.</div>
           </div>
           <div id="welcome-error" style="display:none;background:rgba(220,50,50,.15);border:1px solid rgba(220,50,50,.4);border-radius:8px;padding:10px 14px;font-size:12px;color:#ff6b6b;margin-bottom:10px;line-height:1.5;text-align:left"></div>
           <button class="btn btn-gold" id="btn-welcome" onclick="handleWelcomeClick()">START PLAYING →</button>
@@ -1001,15 +1001,16 @@ body::before {
       </div>
     </div>
 
-    <!-- ── RESULT ── -->
+    <!-- ── RESULT (updated: same options for win/loss) ── -->
     <div class="screen" id="screen-result">
       <div id="result-inner"></div>
       <div id="result-actions" style="padding:0 4px">
-        <div id="result-replay-btns" style="display:none">
+        <div id="result-replay-btns" style="margin-top:10px">
           <button class="btn btn-gold" style="margin-bottom:8px" onclick="playAgain()">▶ PLAY AGAIN  <span style="font-size:10px;opacity:.8">(same lucky number)</span></button>
           <button class="btn btn-ghost" style="margin-bottom:8px" onclick="resultChangeLucky()">🔢 CHANGE LUCKY NUMBER</button>
+          <button class="btn btn-ghost" style="margin-bottom:8px" onclick="backToLobby()">🏠 BACK TO LOBBY</button>
+          <button class="btn btn-ghost" style="margin-top:4px" onclick="goToHistory()">📜 View History</button>
         </div>
-        <button class="btn btn-ghost" style="margin-top:4px" onclick="goToHistory()">View History</button>
       </div>
     </div>
 
@@ -1033,40 +1034,37 @@ body::before {
     <div class="screen" id="screen-deposit">
       <div class="card card-gold fade-in">
         <div class="card-title">💰 Deposit Funds</div>
-        <!-- Payment info box -->
+        <!-- Payment info box (updated to match backend) -->
         <div style="background:var(--surface2);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:14px;font-size:12px;color:var(--text2);line-height:2">
           📱 <b>Send payment to:</b><br>
-          CBE: <span id="dep-cbe" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('1000321953757','CBE number')">1000321953757</span> (ቴዎድሮስ ኤፍሬም ) <span style="font-size:10px;color:var(--text3)" onclick="copyText('1000321953757','CBE number')">📋</span><br>
-          Telebirr: <span id="dep-tel" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('0913252238','Telebirr number')">0913252238</span> (ቴዎድሮስ ኤፍሬም) <span style="font-size:10px;color:var(--text3)" onclick="copyText('0913252238','Telebirr number')">📋</span><br>
-          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">BB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
+          CBE: <span id="dep-cbe" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('1000532982565','CBE number')">1000532982565</span> (Tewodros Ephrem) <span style="font-size:10px;color:var(--text3)" onclick="copyText('1000532982565','CBE number')">📋</span><br>
+          Telebirr: <span id="dep-tel" style="font-family:monospace;color:var(--gold);cursor:pointer;font-weight:700" onclick="copyText('0913252238','Telebirr number')">0913252238</span> (Tewodros Ephrem) <span style="font-size:10px;color:var(--text3)" onclick="copyText('0913252238','Telebirr number')">📋</span><br>
+          Reference: <span id="dep-ref-code" style="font-family:monospace;color:var(--green);font-weight:700;cursor:pointer" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">JB-…</span> <span style="font-size:10px;color:var(--text3)" onclick="copyText(document.getElementById('dep-ref-code').textContent,'Reference')">📋</span>
         </div>
         <label class="label">Your Name (as sent on payment) <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-sender-name" type="text" placeholder="e.g. Abebe Kebede" required>
         <label class="label" style="margin-top:8px">Amount (ETB) <span style="color:var(--red)">*</span></label>
-        <input class="input" id="dep-amount" type="number" min="50" max="5000" placeholder="Min 50 ETB" required>
+        <input class="input" id="dep-amount" type="number" min="10" max="5000" placeholder="Min 50 ETB" required>
         <label class="label" style="margin-top:8px">Transaction Reference / SMS Code <span style="color:var(--red)">*</span></label>
         <input class="input" id="dep-ref" type="text" placeholder="e.g. TXN123456" required>
         <button class="btn btn-gold" style="margin-top:14px" onclick="submitDeposit()">SUBMIT DEPOSIT REQUEST</button>
         <button class="btn btn-ghost" style="margin-top:6px" onclick="showScreen('screen-lobby')">← Back</button>
       </div>
-
     </div>
 
-    <!-- ── WITHDRAW ── -->
+    <!-- ── WITHDRAW (updated rules, min 200, no frontend daily check) ── -->
     <div class="screen" id="screen-withdraw">
       <div class="card card-gold fade-in">
         <div class="card-title">💳 Withdraw Funds</div>
         <div style="background:var(--surface2);border-radius:10px;padding:10px;margin-bottom:12px;font-size:11px;color:var(--text2);line-height:1.6">
-          
           <strong style="color:var(--amber)">Withdrawal Rules</strong><br>
           • Minimum: <strong>200 ETB</strong><br>
           • Total games played (excl. left): at least <strong>15</strong><br>
           • Must play <strong>5 games today</strong> before withdrawing<br>
           • Only <strong>1 withdrawal per day</strong><br>
+          • Must deposit <strong>at least 50 ETB</strong> and have <strong> 50 ETB</strong>remaining in your balance.<br> 
           • Processing: ~1 hour
         </div>
-           
-        
         <label class="label">Payment Method <span style="color:var(--red)">*</span></label>
         <div style="display:flex;gap:8px;margin-bottom:4px">
           <div id="wd-bank-cbe" onclick="selectWdBank('CBE')" style="flex:1;border:2px solid var(--border);border-radius:10px;padding:10px;text-align:center;cursor:pointer;transition:all .2s;font-size:13px;font-weight:700">🏦 CBE</div>
@@ -1074,7 +1072,7 @@ body::before {
         </div>
         <input type="hidden" id="wd-bank">
         <label class="label" style="margin-top:8px">Account Number <span style="color:var(--red)">*</span></label>
-        <input class="input" id="wd-phone" type="tel" placeholder="e.g. 0913252238 or CBE account">
+        <input class="input" id="wd-phone" type="tel" placeholder="e.g. 0944156222 or CBE account">
         <label class="label" style="margin-top:8px">Account Holder Name <span style="color:var(--red)">*</span></label>
         <input class="input" id="wd-account-name" type="text" placeholder="Full name on account">
         <label class="label" style="margin-top:8px">Amount (ETB) <span style="color:var(--red)">*</span></label>
@@ -1082,7 +1080,6 @@ body::before {
         <button class="btn btn-gold" style="margin-top:14px" onclick="submitWithdraw()">SUBMIT WITHDRAWAL</button>
         <button class="btn btn-ghost" style="margin-top:6px" onclick="showScreen('screen-lobby')">← Back</button>
       </div>
-
     </div>
 
     <!-- ── FRIENDS ── -->
@@ -1139,7 +1136,7 @@ body::before {
         <div class="card-title" style="color:var(--gold)">👑 Manage Admins <span style="font-size:10px;color:var(--text3)">(Owner only)</span></div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:10px">Promoted admins can approve deposits/withdrawals but cannot promote others.</div>
         <label class="label">Username to Promote / Demote</label>
-        <input class="input" id="admin-promote-uname" placeholder="Enter BB username" list="admin-uname-list" autocomplete="off">
+        <input class="input" id="admin-promote-uname" placeholder="Enter Admin username" list="admin-uname-list" autocomplete="off">
         <div style="display:flex;gap:8px;margin-top:10px">
           <button class="btn btn-gold" style="flex:1" onclick="adminSetAdmin(true)">👑 Make Admin</button>
           <button class="btn btn-ghost" style="flex:1" onclick="adminSetAdmin(false)">🚫 Remove Admin</button>
@@ -1193,10 +1190,7 @@ body::before {
 /* ══════════════════════════════════════════════════════════
    CONFIGURATION
 ══════════════════════════════════════════════════════════ */
-// Change this to your deployed backend URL
-const API_BASE = window.location.origin; // same origin if flask serves index.html
-
-// Mobile viewport height fix — prevents card clipping on browsers with chrome
+const API_BASE = window.location.origin;
 function _setVh() {
   document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
 }
@@ -1204,23 +1198,23 @@ window.addEventListener('resize', _setVh);
 window.addEventListener('orientationchange', () => setTimeout(_setVh, 200));
 _setVh();
 const BET_AMOUNTS = [10, 20, 50, 100];
+const MIN_WITHDRAW = 200;        // Updated minimum
 
 /* ══════════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════════ */
 const S = {
-  tgUser:       null,    // raw Telegram user obj
-  user:         null,    // DB user
+  tgUser:       null,
+  user:         null,
   selectedBet:  null,
   currentGameId:null,
-  myCard:       null,    // 5×5 card 1
-  myMarked:     [[2,2]], // [[r,c],...] card 1
+  myCard:       null,
+  myMarked:     [[2,2]],
   pickedNumber:  null,
-  previewCard:    null,  // card being previewed before join
-  // Saved after game ends — for Play Again
-  lastBet:        null,
-  lastPickedNum:  null,
-  lastCard:       null,
+  previewCard:   null,
+  lastBet:       null,
+  lastPickedNum: null,
+  lastCard:      null,
   isLightMode:  false,
   gamePolling:  null,
   lobbyPolling: null,
@@ -1234,9 +1228,6 @@ async function api(method, path, body = null) {
   const headers = { 'Content-Type': 'application/json' };
   if (S.tgUser) {
     headers['X-Tg-User'] = JSON.stringify(S.tgUser);
-    // In production also send initData for HMAC verification:
-    // if (window.Telegram?.WebApp?.initData)
-    //   headers['X-Telegram-Init-Data'] = window.Telegram.WebApp.initData;
   }
   const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
@@ -1250,7 +1241,6 @@ async function api(method, path, body = null) {
    INIT
 ══════════════════════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', async () => {
-  // Init Telegram WebApp
   if (window.Telegram?.WebApp) {
     const tg = window.Telegram.WebApp;
     tg.ready();
@@ -1258,31 +1248,22 @@ window.addEventListener('DOMContentLoaded', async () => {
     tg.setHeaderColor?.('#16161f');
     tg.setBackgroundColor?.('#0b0b0e');
   }
-
-  // Get Telegram user
   const tgRaw = window.Telegram?.WebApp?.initDataUnsafe?.user;
   if (tgRaw) {
     S.tgUser = tgRaw;
-    document.getElementById('welcome-greeting').textContent =
-      `Hello, ${tgRaw.first_name}! 👋`;
+    document.getElementById('welcome-greeting').textContent = `Hello, ${tgRaw.first_name}! 👋`;
   } else {
-    // Dev mode: create a fake user
     S.tgUser = { id: 'dev_' + Date.now(), username: 'DevPlayer', first_name: 'Dev' };
     document.getElementById('welcome-greeting').textContent = 'Welcome to Joker Bingo! 👋';
   }
-
-  // Theme
   const saved = localStorage.getItem('bb_theme');
   if (saved === 'light') applyTheme(true, false);
   else document.getElementById('theme-toggle')?.classList.remove('on');
-
-  // Try silent auth first — skip welcome screen for returning users
   try {
     const res = await api('POST', '/api/auth', { tg_user: S.tgUser });
     if (res.status === 'existing') {
       S.user = res.user;
       onLoggedIn();
-      // Handle ?bet=N deep link
       const urlBet = parseInt(new URLSearchParams(location.search).get('bet'));
       if (urlBet && [10,20,50,100].includes(urlBet)) {
         setTimeout(() => {
@@ -1290,14 +1271,11 @@ window.addEventListener('DOMContentLoaded', async () => {
           if (card) selectBet(urlBet, card);
         }, 200);
       }
-      return; // skip welcome screen entirely
+      return;
     } else if (res.status === 'new') {
-      // Pre-fill username for faster registration
       document.getElementById('input-username').value = res.suggested_username || '';
     }
-  } catch (_) {
-    // Network error — fall through to welcome screen, user can retry manually
-  }
+  } catch (_) {}
   showScreen('screen-welcome');
 });
 
@@ -1307,17 +1285,13 @@ window.addEventListener('DOMContentLoaded', async () => {
 async function handleWelcomeClick() {
   const btn = document.getElementById('btn-welcome');
   btn.textContent = '⏳ Connecting…'; btn.disabled = true;
-
-  // Show persistent error banner so user can see what went wrong
   const errEl = document.getElementById('welcome-error');
   if (errEl) errEl.style.display = 'none';
-
   try {
     const res = await api('POST', '/api/auth', { tg_user: S.tgUser });
     if (res.status === 'existing') {
       S.user = res.user;
       onLoggedIn();
-      // If opened from bot with ?bet=N, pre-select that bet
       const urlBet = parseInt(new URLSearchParams(location.search).get('bet'));
       if (urlBet && [10,20,50,100].includes(urlBet)) {
         setTimeout(() => {
@@ -1326,12 +1300,10 @@ async function handleWelcomeClick() {
         }, 200);
       }
     } else {
-      // New user — pre-fill suggested username
       document.getElementById('input-username').value = res.suggested_username || '';
       showScreen('screen-register');
     }
   } catch (e) {
-    // Show persistent error — toast disappears too fast for users to read
     const msg = e.message || 'Connection failed. Please try again.';
     if (errEl) { errEl.textContent = '⚠️ ' + msg; errEl.style.display = 'block'; }
     else toast(msg, 'error');
@@ -1380,8 +1352,6 @@ async function onLoggedIn() {
   renderNav();
   document.getElementById('header').style.display = 'flex';
   document.getElementById('footer').style.display = 'flex';
-
-  // Check if user is already in an active/waiting game and resume it
   try {
     const games = await api('GET', '/api/games');
     const myUsername = S.user?.username;
@@ -1390,7 +1360,6 @@ async function onLoggedIn() {
       (g.players || []).some(p => p.username === myUsername)
     );
     if (myActive) {
-      // Fetch full game to get card data, then resume
       const full = await api('GET', '/api/games/' + myActive.id);
       if (full.my_player) {
         S.currentGameId = full.id;
@@ -1402,14 +1371,10 @@ async function onLoggedIn() {
       }
     }
   } catch (_) {}
-
   showScreen('screen-lobby');
   startLobbyPolling();
 }
 
-/* ══════════════════════════════════════════════════════════
-   HEADER / NAV
-══════════════════════════════════════════════════════════ */
 function renderHeader() {
   const u = S.user;
   if (!u) return;
@@ -1430,13 +1395,11 @@ function renderNav() {
     { icon:'📜', label:'History',        screen:'screen-history',     fn:'loadHistory' },
   ];
   if (u?.is_admin) items.push({ icon:'⚙️', label:'Admin Panel', screen:'screen-admin', fn:'loadAdmin' });
-
   document.getElementById('nav-items').innerHTML = items.map(i =>
     `<div class="nav-item" onclick="navTo('${i.screen}','${i.fn||''}')">
       <span class="nav-icon">${i.icon}</span>${i.label}
     </div>`
   ).join('');
-
   document.getElementById('nav-footer').innerHTML = u ? `
     <div class="nav-user-chip">
       <div class="nav-avatar">${u.username[0].toUpperCase()}</div>
@@ -1460,7 +1423,7 @@ function copyText(txt, label) {
 function loadDeposit() {
   const uid = window.Telegram?.WebApp?.initDataUnsafe?.user?.id || S.tgUser?.id || 'YOUR_TG_ID';
   const rc = document.getElementById('dep-ref-code');
-  if (rc) rc.textContent = 'BB-' + uid;
+  if (rc) rc.textContent = 'JB-' + uid;
 }
 function loadWithdraw() {}
 function selectWdBank(bank) {
@@ -1491,31 +1454,34 @@ async function submitDeposit() {
     setTimeout(()=>showScreen('screen-lobby'),2500);
   } catch(e) { toast(e.message||'Error','error'); }
 }
+
+/* Withdrawal: let backend enforce all rules */
 async function submitWithdraw() {
   const bank  = (document.getElementById('wd-bank')?.value||'').trim();
   const phone = (document.getElementById('wd-phone')?.value||'').trim();
   const aname = (document.getElementById('wd-account-name')?.value||'').trim();
-  const amt   = (document.getElementById('wd-amount')?.value||'').trim();
+  const amt   = parseFloat((document.getElementById('wd-amount')?.value||'').trim());
   if (!bank)  { toast('Select payment method (CBE or Telebirr)','error'); return; }
   if (!phone) { toast('Enter account/phone number','error'); return; }
   if (!aname) { toast('Enter account holder name','error'); return; }
-  if (!amt||parseFloat(amt)<100) { toast('Min withdrawal is 100 ETB','error'); return; }
+  if (isNaN(amt) || amt < MIN_WITHDRAW) { toast(`Minimum withdrawal is ${MIN_WITHDRAW} ETB`,'error'); return; }
   try {
-    await api('POST','/api/withdraw-request',{amount:parseFloat(amt),phone,bank,account_name:aname});
+    await api('POST','/api/withdraw-request',{amount:amt,phone,bank,account_name:aname});
     toast('✅ Withdrawal request sent! Processed within ~1 hour.','success');
     ['wd-bank','wd-phone','wd-account-name','wd-amount'].forEach(id=>{
       const el=document.getElementById(id); if(el)el.value='';
     });
-    selectWdBank(''); // reset selection
+    selectWdBank('');
     setTimeout(()=>showScreen('screen-lobby'),2500);
   } catch(e) { toast(e.message||'Error','error'); }
 }
+
 async function loadFriends() {
   try {
     const stats=await api('GET','/api/referral-stats');
     document.getElementById('friends-count').textContent=stats.referral_count||0;
     document.getElementById('friends-next').textContent=stats.next_bonus_at||10;
-    const botName='Zebi_Bingo_Bot';
+    const botName='Joker_Bingo_Bot';
     const link=`https://t.me/${botName}?start=${S.tgUser?.id||''}`;
     const le=document.getElementById('friends-link'); if(le)le.textContent=link;
     const listEl=document.getElementById('friends-list');
@@ -1532,14 +1498,13 @@ function copyReferralLink() {
 }
 function shareReferralTelegram() {
   const t=document.getElementById('friends-link')?.textContent||'';
-  const msg='Join Joker Bingo 🎱 and win ETB!\n🎁 Get 10% bonus on your first deposit!\n\nበ 10 ብር ቦነስ ጀምሩ! 1ኛ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! ይጫወቱ! ያሸንፉ!';
+  const msg='Join Joker Bingo 🎱 and win ETB!\n🎁 Get 10% bonus on your first deposit!\n\nበ 10 ብር ቦነስ ጀምሩ! ለመጀመሪያ ዲፖዚት 10% ቦነስ! ጓደኛ ሲጋብዙ ሌላ ቦነስ! የጋበዙት ጓደኛ ዲፖዚት ሲያደርግ ለናንተ ቦነስ! ይጫወቱ! ያሸንፉ!';
   const url=`https://t.me/share/url?url=${encodeURIComponent(t)}&text=${encodeURIComponent(msg)}`;
   if(window.Telegram?.WebApp?.openTelegramLink)window.Telegram.WebApp.openTelegramLink(url);
   else window.open(url,'_blank');
 }
 
 function goToLobby() {
-  // Stop any in-progress game polling before going to lobby
   clearTimeout(S.gamePolling);
   S.gamePolling = null;
   S.currentGameId = null;
@@ -1547,7 +1512,6 @@ function goToLobby() {
   startLobbyPolling();
 }
 function openNav()  {
-  // Block nav while in a waiting/active game — player must leave/forfeit first
   if (S.currentGameId) {
     toast('Leave or forfeit the game first to access the menu.', 'error');
     return;
@@ -1571,13 +1535,11 @@ async function refreshLobby() {
     S.user = lobby.user;
     renderHeader(); renderNav();
     const games = lobby.games || [];
-    // Per-bet waiting counts
     [10,20,50,100].forEach(b => {
       const count = games.filter(g=>g.bet_amount===b).reduce((s,g)=>s+g.player_count,0);
       const el = document.getElementById('bp-'+b);
       if (el) el.textContent = count;
     });
-    // Active lobby list for selected bet
     if (S.selectedBet) _renderGamesForBet(S.selectedBet, games.filter(g=>g.bet_amount===S.selectedBet));
   } catch (_) {}
 }
@@ -1656,12 +1618,10 @@ function _updatePickerBar(gm) {
   const bar = document.getElementById('picker-game-bar');
   if (!bar) return;
   bar.style.display = 'block';
-  // Player count & pot
   document.getElementById('picker-player-count').textContent = gm.player_count || 0;
   const potEtb = gm.pot || 0;
   document.getElementById('picker-pot').textContent = potEtb.toLocaleString();
   document.getElementById('picker-prize').textContent = (gm.prize || 0).toLocaleString();
-  // Countdown
   const cdWrap = document.getElementById('picker-countdown-wrap');
   if (gm.status === 'countdown' && gm.countdown_remaining > 0) {
     if (cdWrap) cdWrap.style.display = 'block';
@@ -1669,13 +1629,11 @@ function _updatePickerBar(gm) {
   } else {
     if (cdWrap) cdWrap.style.display = 'none';
   }
-  // Game started lockout
   const previewBtn = document.getElementById('preview-btn');
   const startedWarn = document.getElementById('picker-started-warn');
   if (gm.status === 'active') {
     if (previewBtn) { previewBtn.disabled = true; previewBtn.style.opacity = '0.4'; }
     if (startedWarn) startedWarn.style.display = 'block';
-    // Start 60s wait timer if not already running
     if (!_pickerWaitTimer) {
       let _waitSec = 60;
       const timerEl = document.getElementById('picker-wait-timer');
@@ -1685,7 +1643,6 @@ function _updatePickerBar(gm) {
         if (timerEl) timerEl.textContent = _waitSec;
         if (_waitSec <= 0) {
           clearInterval(_pickerWaitTimer); _pickerWaitTimer = null;
-          // Time up — go back to lobby for a new game
           stopPickerPoll();
           S.currentGameId = null;
           showScreen('screen-lobby'); startLobbyPolling();
@@ -1694,12 +1651,9 @@ function _updatePickerBar(gm) {
       }, 1000);
     }
   } else if (gm.status === 'finished') {
-    // Previous game ended — re-enable proceed and clear lockout
     if (previewBtn) { previewBtn.disabled = false; previewBtn.style.opacity = '1'; }
     if (startedWarn) startedWarn.style.display = 'none';
     if (_pickerWaitTimer) { clearInterval(_pickerWaitTimer); _pickerWaitTimer = null; }
-    // Game ended — point player at the single open room for this bet
-    // POST /api/games returns the existing waiting/countdown room, or creates one
     api('POST', '/api/games', { bet_amount: S.selectedBet }).then(room => {
       S.currentGameId = room.id;
       toast('Game over — tap Proceed to join the next game!', 'success');
@@ -1716,13 +1670,12 @@ async function _pollPickerGame() {
   try {
     const gm = await api('GET', '/api/games/' + S.currentGameId);
     _updatePickerBar(gm);
-    // Update taken numbers on the grid in real time
     const taken = (gm.players || [])
       .flatMap(p => [p.picked_number, p.picked_number2])
       .filter(Boolean);
     if (taken.length !== _lastTakenNumbers.length ||
         taken.some(n => !_lastTakenNumbers.includes(n))) {
-      buildNumGrid(taken);  // surgical — only changed cells update
+      buildNumGrid(taken);
     }
   } catch(_) {}
 }
@@ -1731,13 +1684,10 @@ async function enterPickerForGame(gameId) {
   S.currentGameId = gameId;
   stopLobbyPolling();
   stopPickerPoll();
-
-  // Build number grid (show taken numbers)
   let takenNumbers = [];
   try {
     const gm = await api('GET', '/api/games/' + gameId);
     takenNumbers = gm.players.flatMap(p=>[p.picked_number, p.picked_number2]).filter(Boolean);
-    // Check if already joined
     if (gm.my_player) {
       S.myCard   = gm.my_player.card;
       S.myMarked = gm.my_player.marked_cells;
@@ -1746,11 +1696,9 @@ async function enterPickerForGame(gameId) {
       return;
     }
   } catch (_) {}
-
   _lastTakenNumbers = takenNumbers;
   buildNumGrid(takenNumbers);
   showScreen('screen-picker');
-  // Start live game-info polling for picker screen
   _pollPickerGame();
   _pickerPollInterval = setInterval(_pollPickerGame, 2000);
   S.pickedNumber = null;
@@ -1763,10 +1711,10 @@ async function enterPickerForGame(gameId) {
 ══════════════════════════════════════════════════════════ */
 let _lastTakenNumbers = [];
 let _lastPrize      = 0;
-let _clockOffset    = 0;  // ms diff: server_time - client Date.now()
-let _gameStartedAt  = 0;  // server unix seconds when game went active
-let _callInterval   = 3;  // seconds between calls (from server)
-let _calledNumbers  = []; // full array kept in sync by poll
+let _clockOffset    = 0;
+let _gameStartedAt  = 0;
+let _callInterval   = 3;
+let _calledNumbers  = [];
 let _callTicker     = null;
 
 function _startCallTicker() {
@@ -1778,7 +1726,7 @@ function _stopCallTicker() {
 }
 function _tickCallDisplay() {
   if (!_gameStartedAt || !_calledNumbers.length) return;
-  const serverNow  = (Date.now() + _clockOffset) / 1000; // estimate of current server time
+  const serverNow  = (Date.now() + _clockOffset) / 1000;
   const elapsed    = serverNow - _gameStartedAt;
   const idx        = Math.min(Math.floor(elapsed / _callInterval), _calledNumbers.length - 1);
   if (idx < 0) return;
@@ -1799,7 +1747,6 @@ function _tickCallDisplay() {
 function buildNumGrid(taken = []) {
   _lastTakenNumbers = taken;
   const grid = document.getElementById('num-grid');
-  // Surgical update: if grid already has 100 cells just update classes
   const existing = grid.querySelectorAll('.num-cell');
   if (existing.length === 100) {
     existing.forEach(div => {
@@ -1819,7 +1766,6 @@ function buildNumGrid(taken = []) {
     });
     return;
   }
-  // Full build (first render)
   grid.innerHTML = '';
   for (let i = 1; i <= 100; i++) {
     const isTaken = taken.includes(i);
@@ -1849,15 +1795,11 @@ async function goToPreview() {
   try {
     const r1 = await api('GET', '/api/preview-card/' + S.pickedNumber);
     S.previewCard = r1.card;
-
     renderPreviewBoth();
     showScreen('screen-card-preview');
   } catch (e) { toast(e.message || 'Error generating preview', 'error'); }
 }
 
-/* ══════════════════════════════════════════════════════════
-   CARD PREVIEW
-══════════════════════════════════════════════════════════ */
 function renderPreviewBoth() {
   const card = S.previewCard || S.myCard;
   const n = S.pickedNumber;
@@ -1907,7 +1849,6 @@ function renderCardPreview(card, pickedNum) {
 
 async function proceedToGame() {
   try {
-    // Instantly mark own number(s) red so picker looks right if we come back
     if (S.pickedNumber) {
       const nowTaken = [..._lastTakenNumbers];
       if (!nowTaken.includes(S.pickedNumber)) nowTaken.push(S.pickedNumber);
@@ -1937,7 +1878,6 @@ function startGameScreen() {
   if (cb) cb.style.display = 'inline-block';
   renderGameCard();
   pollGame();
-  // Poll faster when active (numbers called every 3s), slower during waiting
   function _scheduleGamePoll() {
     const interval = _gameIsActive ? 2000 : 3000;
     S.gamePolling = setTimeout(async () => {
@@ -1952,28 +1892,16 @@ async function pollGame() {
   if (!S.currentGameId) return;
   try {
     const gm = await api('GET', '/api/games/' + S.currentGameId);
-
-    // Sync player state from server
     if (gm.my_player) {
       if (!S.myCard && gm.my_player.card) { S.myCard=gm.my_player.card; renderGameCard(); }
-      // Server is source of truth for marks
       S.myMarked = gm.my_player.marked_cells || [[2,2]];
       if (gm.my_player.kicked) { clearTimeout(S.gamePolling); showResult(false,0,null,true); return; }
     }
-
     if (gm.status === 'finished') {
       clearTimeout(S.gamePolling);
-      // Check if WE are the winner (last standing scenario)
-      if (gm.winner_id && gm.my_player && !gm.my_player.kicked) {
-        const myPlayer = gm.players?.find(p => p.username === S.user?.username);
-        if (myPlayer?.has_bingo || (gm.winner_id === gm.my_player_db_id)) {
-          // handled by handleGameFinished
-        }
-      }
       handleGameFinished(gm);
       return;
     }
-
     const leaveBtn = document.getElementById('leave-btn');
     if (gm.status === 'waiting' || gm.status === 'countdown') {
       if (leaveBtn) leaveBtn.textContent = 'Leave Game';
@@ -1981,14 +1909,12 @@ async function pollGame() {
       document.getElementById('game-player-count').textContent = gm.player_count + ' player' + (gm.player_count!==1?'s':'');
       document.getElementById('game-room-label').textContent = gm.id;
       if (gm.status === 'waiting') {
-        _stopCountdownTick();
-        _stopCallTicker();
+        _stopCountdownTick(); _stopCallTicker();
         _countdownStarted = false; _gameIsActive = false;
         document.getElementById('countdown-display').textContent = formatTime(30);
         document.getElementById('waiting-status-msg').textContent = '⏳ Waiting for another player to join…';
         document.getElementById('game-status-chip').innerHTML = '<div class="chip chip-gold">WAITING</div>';
       } else {
-        // Countdown: seed client ticker from server value, only re-seed if server differs by >2s
         const serverSecs = gm.countdown_remaining ?? 30;
         if (!_countdownStarted || Math.abs(_countdownValue - serverSecs) > 2) {
           _startCountdownTick(serverSecs);
@@ -1998,18 +1924,15 @@ async function pollGame() {
         document.getElementById('game-status-chip').innerHTML = '<div class="chip chip-green"><span class="dot"></span>COUNTDOWN</div>';
       }
     }
-
     if (gm.status === 'active') {
       if (leaveBtn) leaveBtn.textContent = 'Forfeit Game';
-      _stopCountdownTick();
-      _gameIsActive = true;
+      _stopCountdownTick(); _gameIsActive = true;
       showPhase('phase-active');
       const called = gm.called_numbers || [];
       document.getElementById('called-count').textContent = called.length;
       document.getElementById('active-player-count').textContent = gm.player_count + ' players';
-      // Sync clock offset and store numbers — ticker handles display
       if (gm.server_time) {
-        _clockOffset = gm.server_time * 1000 - Date.now(); // ms
+        _clockOffset = gm.server_time * 1000 - Date.now();
       }
       if (called.length > 0) {
         _calledNumbers  = called;
@@ -2018,7 +1941,6 @@ async function pollGame() {
         if (!_callTicker) _startCallTicker();
       }
       S.prevCalledLen = called.length;
-      // No card highlight — player marks manually
     }
   } catch (e) {
     console.warn('poll error', e.message);
@@ -2079,11 +2001,9 @@ function checkLocalBingo() {
   for (let c=0;c<5;c++) if([0,1,2,3,4].every(r=>ok(r,c))) return true;
   if([0,1,2,3,4].every(i=>ok(i,i))) return true;
   if([0,1,2,3,4].every(i=>ok(i,4-i))) return true;
-  if([[0,0],[0,4],[4,0],[4,4]].every(([r,c])=>ok(r,c))) return true; // 4 corners
+  if([[0,0],[0,4],[4,0],[4,4]].every(([r,c])=>ok(r,c))) return true;
   return false;
 }
-
-function updateBingoButton() { /* BINGO button always visible — server validates at claim */ }
 
 async function refreshUser() {
   try {
@@ -2129,10 +2049,8 @@ function handleGameFinished(gm) {
     const winner = gm.players?.find(p => p.has_bingo);
     const iWon   = winner && winner.username === S.user?.username;
     if (iWon) {
-      // Already shown via doClaim / bingo overlay — but handle here for poll-based detection
       refreshUser().then(() => showResult(true, _lastPrize || gm.prize || 0));
     } else if (gm.my_player && !gm.my_player.kicked && !winner) {
-      // We're still in game, no winner via bingo — last standing
       refreshUser().then(() => showResult(true, gm.prize || 0));
     } else {
       showResult(false, 0, winner ? winner.username : null);
@@ -2176,9 +2094,7 @@ function showResult(won, balance, winnerName, kicked=false, forfeited=false, for
       <div class="result-sub">${winnerName==='__last_standing__'?'Winnings added to your wallet.':'Better luck next time!'}</div></div>`;
     }
   }
-  // Show Play Again button only if we have a saved card
-  const replayBtns = document.getElementById('result-replay-btns');
-  if (replayBtns) replayBtns.style.display = S.lastCard ? 'block' : 'none';
+  // Always show the buttons container (already visible)
   showScreen('screen-result');
   _stopCountdownTick();
   _stopCallTicker();
@@ -2187,9 +2103,15 @@ function showResult(won, balance, winnerName, kicked=false, forfeited=false, for
   startLobbyPolling();
 }
 
+// New function: back to lobby from result screen
+function backToLobby() {
+  showScreen('screen-lobby');
+  startLobbyPolling();
+}
+
 let _countdownStarted = false;
-let _countdownValue   = 30;   // client-side copy, ticked every second
-let _countdownTicker  = null; // setInterval handle
+let _countdownValue   = 30;
+let _countdownTicker  = null;
 
 function _startCountdownTick(initialSecs) {
   _countdownValue = Math.max(0, initialSecs);
@@ -2210,13 +2132,11 @@ function _updateCountdownDisplay() {
   if (el) el.textContent = formatTime(_countdownValue);
 }
 let _gameIsActive = false;
-/* Play Again — reuse same card/lucky number in a fresh game */
 async function playAgain() {
   if (!S.lastBet || !S.lastPickedNum) {
     showScreen('screen-lobby'); refreshLobby(); return;
   }
   try {
-    // Get or create the ONE game room for this bet amount
     const gm = await api('POST', '/api/games', { bet_amount: S.lastBet });
     const joined = await api('POST', `/api/games/${gm.id}/join`, {
       picked_number: S.lastPickedNum, dual_card: false
@@ -2229,7 +2149,6 @@ async function playAgain() {
     showScreen('screen-game');
     startGameScreen();
   } catch(e) {
-    // Number taken — go to picker for same game
     try {
       const gm2 = await api('POST', '/api/games', { bet_amount: S.lastBet });
       S.selectedBet = S.lastBet;
@@ -2242,18 +2161,15 @@ async function playAgain() {
 }
 
 function resultChangeLucky() {
-  // Clear saved card state so picker starts fresh
   S.lastCard = null;
   S.pickedNumber = null;
   S.previewCard = null;
   if (S.lastBet) S.selectedBet = S.lastBet;
-  // Go to lobby so player can pick a game first, then picker opens
   showScreen('screen-lobby'); refreshLobby();
 }
 
 function confirmLeave() {
   const warn = document.getElementById('leave-forfeit-warn');
-  // Forfeit only applies when game is actively running, not during waiting/countdown
   if (warn) warn.style.display = (_gameIsActive ? 'block' : 'none');
   document.getElementById('leave-modal').style.display = 'flex';
 }
@@ -2265,19 +2181,16 @@ async function doLeave(confirmed) {
   _stopCallTicker();
   const gid = S.currentGameId;
   S.gamePolling=null;
-  // Tell server the player is leaving
   if (gid) {
     try {
       const res = await api('POST', `/api/games/${gid}/leave`, {});
       if (res.refunded) {
-        // Waiting/countdown — refunded, go to lobby silently
         S.currentGameId=null; S.myCard=null; S.myMarked=[[2,2]];
         _countdownStarted=false;
         showScreen('screen-lobby'); startLobbyPolling();
         return;
       }
       if (res.forfeited && !res.last_standing) {
-        // Active forfeit — save replay state then show forfeit screen
         S.currentGameId = gid;
         if (S.selectedBet && S.pickedNumber) {
           S.lastBet        = S.selectedBet;
@@ -2351,9 +2264,8 @@ function goToHistory() { loadHistory(); showScreen('screen-history'); }
 ══════════════════════════════════════════════════════════ */
 async function loadAdmin() {
   loadAdminStats(); loadAdminGames(); loadAdminUsers();
-  // Show owner-only section
   const adminCard = document.getElementById('admin-manage-admins-card');
-  if (adminCard) adminCard.style.display = S.user?.is_owner ? 'block' : 'none';
+  if (adminCard) adminCard.style.display = (S.user?.is_owner || S.user?.is_admin) ? 'block' : 'none';
 }
 
 async function loadAdminStats() {
@@ -2412,7 +2324,7 @@ async function adminSetAdmin(makeAdmin) {
   const username = (document.getElementById('admin-promote-uname')?.value || '').trim();
   if (!username) { toast('Enter a username', 'error'); return; }
   try {
-    const res = await api('GET', '/api/admin/users');
+    const res = await api('GET', '/api/admin/users?q=' + encodeURIComponent(username));
     const users = res.users || (Array.isArray(res) ? res : []);
     const target = users.find(u => u.username === username);
     if (!target) { toast('User not found', 'error'); return; }
