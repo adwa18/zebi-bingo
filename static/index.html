@@ -1227,7 +1227,10 @@ const S = {
 async function api(method, path, body = null) {
   const headers = { 'Content-Type': 'application/json' };
   if (S.tgUser) {
-    headers['X-Tg-User'] = JSON.stringify(S.tgUser);
+    // Encode user object to base64 to avoid header encoding issues with emojis
+    const userJson = JSON.stringify(S.tgUser);
+    const base64User = btoa(unescape(encodeURIComponent(userJson)));
+    headers['X-Tg-User'] = base64User;
   }
   const opts = { method, headers };
   if (body) opts.body = JSON.stringify(body);
